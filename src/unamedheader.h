@@ -14,7 +14,7 @@
 	#define U_WORD_TYPE uint_64t
 #endif
 
-/*
+
 #if defined(_WINDOWS_)
 	#include
 #elif defined(_UNIX_)
@@ -22,7 +22,7 @@
 #elif defined(_MACH_)
 	#include
 #endif
-*/
+
 
 class color_space;
 class pix;
@@ -38,12 +38,16 @@ class mang_map;
 class map_populator;
 
 typedef std::pair<string, unsigned int> color_space_key_pairing;
-typedef void (*tool_function)(std::string *);
+typedef void (* tool_function)(std::stringstream *);
+typedef void (* mang_function)(pixblock *, std::stringstream *);
+typedef pixblock * (* codec_function)(file *, std::stringstream *);
 
 class file
 {
 public:
 	std::fstream file_stream;
+
+	file & operator"" instantiate_from_file_path(std::string file_path);
 private:
 	std::string file_path;
 	std::string file_extension;
@@ -63,9 +67,11 @@ public:
 	inline operator unsigned int();
 	inline operator unsigned long();
 
-	color_space();
+
 
 private:
+
+	color_space();
 
 	std::map<std::string, unsigned long> color_space_key_map;
 	
@@ -98,13 +104,14 @@ public:
 	//inline operator WORD_TYPE();
 	//inline operator U_WORD_TYPE();
 	//inline unsigned int get_bit_depth();
-	pix(pixrow * from_row_ptr);
+
 
 	//inline bool set_depth(unsigned int new_depth);
 
 	
 	
 private:
+	pix(pixrow * from_row_ptr);
 
 	pixrow & from_row_ref;
 
@@ -132,8 +139,9 @@ public:
 
 	inline unsigned int length();
 
-	pixrow(pixblock * from_block_ptr);
+
 private:
+	pixrow(pixblock * from_block_ptr);
 
 	pixblock & from_block_ref;
 
@@ -189,7 +197,40 @@ private:
 	
 };
 
-class file_stack
+template <typename T, typename func_type>
+class work_item_map
+{
+public:
+	bool add_item(std::string name, func_type func_for_constructor);
+	bool remove_item(std::string name);
+
+	T * get_item(std::string name);
+
+private:
+	std::string type_for_map;
+
+	std::map<std::string, func_type> work_item_map;
+
+
+
+};
+
+template <typename T>
+class stack
+{
+public:
+	unsigned int add_item(T * item);
+	bool remove_item(unsigned int item_index);
+	T * get_item(unsigned int item_index);
+
+private:
+	std::string type_for_stack;
+
+	std::vector<T *> stack_object_vector;
+
+};
+
+/*class file_stack
 {
 
 };
@@ -197,47 +238,58 @@ class file_stack
 class image_stack
 {
 
-};
+
+};*/
 
 class tool
 {
 public:
-	inline operator(std::string *);
+	inline void operator(std::stringstream * params);
 private:
+	std::string tool_name;
+
 	tool_function func_from_dll;
 };
 
-class tool_map
+/*class tool_map
 {
 public:
 
 private:
 	std::map<string, tool> tool_map;
 
-};
+};*/
 
 class mangler
 {
 public:
+	inline void operator(pixblock * image, std::stringstream * params);
 
 private:
+	std::string mang_name;
 
+	mang_function func_from_dll;
 };
 
-class mang_script_map
+/*class mang_script_map
 {
 
-};
+};*/
 
 class codec
 {
+public:
+	inline pixblock * operator(file * file_to_decode, std::stringstream * params);
+private:
+	std::string code_name;
 
+	codec_function func_from_dll;
 };
 
-class codec_map
+/*class codec_map
 {
 
-};
+};*/
 
 class map_populator
 {
