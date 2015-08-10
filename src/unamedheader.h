@@ -40,6 +40,15 @@ class map_populator;
 typedef std::pair<string, unsigned int> color_space_key_pairing;
 typedef void (*tool_function)(std::string *);
 
+class file
+{
+public:
+	std::fstream file_stream;
+private:
+	std::string file_path;
+	std::string file_extension;
+};
+
 class color_space
 {
 	friend class pixblock;
@@ -64,7 +73,7 @@ private:
 
 	unsigned int required_bit_depth;
 
-	string current_get_value;
+	std::string current_get_value;
 
 	pix & from_pixel_ref;
 
@@ -178,6 +187,11 @@ private:
 	unsigned long * * pixel_block;
 	pixrow pixel_row_access_buffer;
 	
+};
+
+class file_stack
+{
+
 };
 
 class image_stack
