@@ -10,52 +10,63 @@ file & file::operator"" instantiate_from_file_path(std::string file_path)
 
 inline pix & color_space::operator=(int new_val)
 {
-
+	from_pixel_ref.pixel_val& |= (color_space_key_map[current_get_value] | (new_val << color_space_position_map[current_get_value]));
+	from_pixel_ref.pixel_val& &= from_pixel_ref.bit_mask;
+	return from_pixel_ref;
 }
 
 inline pix & color_space::operator=(long new_val)
 {
-
+	from_pixel_ref.pixel_val& |= (color_space_key_map[current_get_value] | (new_val << color_space_position_map[current_get_value]));
+	from_pixel_ref.pixel_val& &= from_pixel_ref.bit_mask;
+	return from_pixel_ref;
 }
 
 inline pix & color_space::operator=(unsigned int new_val)
 {
-
+	from_pixel_ref.pixel_val& |= (color_space_key_map[current_get_value] | (new_val << color_space_position_map[current_get_value]));
+	from_pixel_ref.pixel_val& &= from_pixel_ref.bit_mask;
+	return from_pixel_ref;
 }
 
 inline pix & color_space::operator=(unsigned long new_val)
 {
-
+	from_pixel_ref.pixel_val& |= (color_space_key_map[current_get_value] | (new_val << color_space_position_map[current_get_value]));
+	from_pixel_ref.pixel_val& &= from_pixel_ref.bit_mask;
+	return from_pixel_ref;
 }
 
 
 inline color_space::operator int()
 {
-
+	return (int(from_pixel_ref.pixel_val& | color_space_key_map[current_get_value])) >> color_space_position_map; 
 }
 
 inline color_space::operator long()
 {
-
+	return ((from_pixel_ref.pixel_val& | color_space_key_map[current_get_value])) >> color_space_position_map; 
 }
 
 inline color_space::operator unsigned int()
 {
-
+	return (unsigned int(from_pixel_ref.pixel_val& | color_space_key_map[current_get_value])) >> color_space_position_map; 
 }
 
 inline color_space::operator unsigned long()
 {
-
+	return (unsigned long(from_pixel_ref.pixel_val& | color_space_key_map[current_get_value])) >> color_space_position_map; 
 }
 
 
 
 
 
-color_space::color_space()
+color_space::color_space(color_space_key_pairing * new_color_space_key_pairings)
 {
-
+	for(unsigned int index0; index0 < new_color_space_key_pairings.length; ++index0)
+	{
+		//init
+	}
 }
 
 
@@ -69,50 +80,50 @@ bool color_space::set_from_pixel_ref(pix * from_pixel_ptr)
 
 inline pix & pix::operator=(int new_val)
 {
-
+	return from_pixel_ref;
 }
 
 
 inline pix & pix::operator=(long new_val)
 {
-
+	return from_pixel_ref;
 }
 
 
 inline pix & pix::operator=(unsigned int new_val)
 {
-
+	return from_pixel_ref;
 }
 
 
 inline pix & pix::operator=(unsigned long new_val)
 {
-
+	return from_pixel_ref;
 }
 
 
 
 inline pix::operator int()
 {
-
+ 	return int(pixel_val&);
 }
 
 
 inline pix::operator long()
 {
-
+	return long(pixel_val&);
 }
 
 
 inline pix::operator unsigned int()
 {
-
+	return unsigned int(pixel_val&);
 }
 
 
 inline pix::operator unsigned long()
 {
-
+	return pixel_val&;
 }
 
 

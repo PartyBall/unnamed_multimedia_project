@@ -71,9 +71,10 @@ public:
 
 private:
 
-	color_space();
+	color_space(color_space_key_pairing * new_color_space_key_pairings);
 
 	std::map<std::string, unsigned long> color_space_key_map;
+	std::map<std::string, unsigned int> color_space_position_map;
 	
 	bool set_from_pixel_ref(pix * from_pixel_ptr);
 
